@@ -25,6 +25,9 @@ Ping one or more caches.
 
             args = settings.CACHES.keys()
         else:
+            if not args:
+                raise CommandError("specify at least one cache to ping")
+
             # Make sure all names given exist
             for name in args:
                 get_cache(name)

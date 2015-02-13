@@ -42,6 +42,9 @@ not prefixed with the cache's key. "conservative" is the default.
 
             args = settings.CACHES.keys()
         else:
+            if not args:
+                raise CommandError("specify at least one cache to clear")
+
             # Make sure all names given exist
             for name in args:
                 get_cache(name)
