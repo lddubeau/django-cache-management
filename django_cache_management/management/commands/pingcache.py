@@ -32,12 +32,17 @@ Ping one or more caches.
             for name in args:
                 get_cache(name)
 
+        failed = False
         for name in args:
             cache = get_cache(name)
             try:
                 "foo" in cache
             except:  # pylint: disable=bare-except
                 result = "... unsuccessful"
+                failed = True
             else:
                 result = "... successful"
             self.stdout.write("Pinging " + name + result)
+
+        if failed:
+            raise CommandError("ping failed")
