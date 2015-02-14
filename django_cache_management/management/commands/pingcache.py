@@ -23,7 +23,7 @@ Ping one or more caches.
             if args:
                 raise CommandError("cannot use --all with a cache name")
 
-            args = settings.CACHES.keys()
+            args = sorted(settings.CACHES.keys())
         else:
             if not args:
                 raise CommandError("specify at least one cache to ping")

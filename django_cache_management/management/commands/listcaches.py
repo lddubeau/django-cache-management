@@ -17,7 +17,7 @@ class Command(BaseCommand):
     """
 
     def handle(self, *args, **options):
-        for name, value in settings.CACHES.iteritems():
+        for name, value in sorted(settings.CACHES.iteritems()):
             self.stdout.write("Cache named: " + name)
             # We use dumps to pretty-print the dictionary
             self.stdout.write(clean_re.sub(u"\n",
