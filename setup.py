@@ -6,7 +6,7 @@ version = open('VERSION').read().strip()
 long_description = open("README.rst").read()
 
 install_requires = [
-    'Django>=1.6,<1.8',
+    'Django>=1.6,<1.9',
     'django-nose>=1.3,<2',
     'django-redis>=3.8.1,<4',
     'six'
@@ -41,15 +41,18 @@ setup(
     keywords=["Django", "caching"],
     url="https://github.com/lddubeau/django-cache-management",
     install_requires=install_requires,
-    # use_2to3=True,
     classifiers=[
         "Programming Language :: Python",
-        #"Programming Language :: Python :: 3",
-        "Development Status :: 3 - Alpha",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.4",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
         "Operating System :: POSIX",
         "Framework :: Django",
+        "Framework :: Django :: 1.6",
+        "Framework :: Django :: 1.7",
+        "Framework :: Django :: 1.8",
         "Topic :: Software Development :: Libraries",
         "Topic :: Utilities",
     ],

@@ -5,11 +5,38 @@ import time
 
 import six
 from django.test.utils import override_settings
-from django.core.cache import get_cache
 from django.test.testcases import SimpleTestCase
 from nose.tools import assert_equal
 
 from settings import clearcache
+
+# We set ``using_caches`` because our software merely lets the exceptions
+# caused by referencing bad cache names trickle up, and these
+# exceptions are different depending on whether ``caches`` is used or
+# ``get_cache``.
+try:
+    # Django 1.7 and later
+    from django.core.cache import caches
+
+    def get_cache(name):
+        return caches[name]
+
+    def make_expected_missing_cache_error(name):
+        return \
+            ("django.core.cache.backends.base.InvalidCacheBackendError: "
+             "Could not find config for \'{0}\' in settings.CACHES") \
+            .format(name).encode()
+
+    using_caches = True
+except ImportError:
+    # Django 1.6
+    from django.core.cache import get_cache
+    using_caches = False
+
+    def make_expected_missing_cache_error(name):
+        return \
+            ("django.core.cache.backends.base.InvalidCacheBackendError: "
+             "Could not find backend \'{0}\'").format(name).encode()
 
 CWD = os.getcwd()
 
@@ -82,7 +109,7 @@ Pinging foo... successful
         self.assertEqual(out, b"")
         six.assertRegex(self,
                         err,
-                        b"django.core.cache.backends.base.InvalidCacheBackendError: Could not find backend \'blah\'")
+                        make_expected_missing_cache_error("blah"))
 
         self.assertEqual(p.returncode, 1)
 
@@ -121,7 +148,7 @@ class ClearcacheTestCase(SimpleTestCase, ExecMixin):
         self.assertEqual(out, b"")
         six.assertRegex(self,
                         err,
-                        b"django.core.cache.backends.base.InvalidCacheBackendError: Could not find backend \'blah\'")
+                        make_expected_missing_cache_error("blah"))
         self.assertEqual(p.returncode, 1)
 
     def test_clearcache_conservative_clears_only_one_cache(self, explicit=False):
