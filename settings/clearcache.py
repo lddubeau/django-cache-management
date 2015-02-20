@@ -1,4 +1,5 @@
 from .normal import *
+from six.moves import xrange
 
 for index in xrange(1, 3):
     name = 'redis' + str(index)

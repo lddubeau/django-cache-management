@@ -5,6 +5,7 @@ version = open('VERSION').read().strip()
 install_requires = [
     'django-nose>=1.3,<2',
     'django-redis>=3.8.1,<4',
+    'six'
 ]
 
 setup(

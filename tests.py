@@ -3,6 +3,7 @@ import unittest
 import os
 import time
 
+import six
 from django.test.utils import override_settings
 from django.core.cache import get_cache
 from django.test.testcases import SimpleTestCase
@@ -15,7 +16,7 @@ CWD = os.getcwd()
 def test_listcaches():
     p = Popen(["./manage.py", "listcaches"], stdout=PIPE, stderr=PIPE)
     (out, err) = p.communicate()
-    expected = """\
+    expected = b"""\
 Cache named: default
 {
     "BACKEND": "django.core.cache.backends.locmem.LocMemCache"
@@ -27,9 +28,9 @@ Cache named: foo
 }
 
 """
+    assert_equal(err, b"", "stderr should be empty")
     assert_equal(out, expected, "stdout should be a list of caches"
                  " and their settings")
-    assert_equal(err, "", "stderr should be empty")
 
 class ExecMixin(object):
     command = None
@@ -48,46 +49,48 @@ class PingTestCase(unittest.TestCase, ExecMixin):
 
     def test_pingcache_all_successful(self):
         (out, err, p) = self.runcmd(["--all"])
-        self.assertEqual(out, """\
+        self.assertEqual(out, b"""\
 Pinging default... successful
 Pinging foo... successful
 """)
-        self.assertEqual(err, "")
+        self.assertEqual(err, b"")
         self.assertEqual(p.returncode, 0)
 
     def test_pingcache_all_fails(self):
         (out, err, p) = self.runcmd(["--all",
                                      "--settings=settings.nonexistent"])
-        self.assertEqual(out, """\
+        self.assertEqual(out, b"""\
 Pinging default... successful
 Pinging foo... successful
 Pinging nonexistent... unsuccessful
 """)
-        self.assertEqual(err, "CommandError: ping failed\n")
+        self.assertEqual(err, b"CommandError: ping failed\n")
         self.assertEqual(p.returncode, 1)
 
     def test_pingcache_some_successful(self):
         (out, err, p) = self.runcmd(["default", "foo",
                                      "--settings=settings.nonexistent"])
-        self.assertEqual(out, """\
+        self.assertEqual(out, b"""\
 Pinging default... successful
 Pinging foo... successful
 """)
-        self.assertEqual(err, "")
+        self.assertEqual(err, b"")
         self.assertEqual(p.returncode, 0)
 
     def test_pingcache_unknown_cache(self):
         (out, err, p) = self.runcmd(["blah"])
-        self.assertEqual(out, "")
-        self.assertRegexpMatches(
-            err, "django.core.cache.backends.base.InvalidCacheBackendError: Could not find backend \'blah\'")
+        self.assertEqual(out, b"")
+        six.assertRegex(self,
+                        err,
+                        b"django.core.cache.backends.base.InvalidCacheBackendError: Could not find backend \'blah\'")
+
         self.assertEqual(p.returncode, 1)
 
     def test_pingcache_no_cache(self):
         (out, err, p) = self.runcmd([])
-        self.assertEqual(out, "")
+        self.assertEqual(out, b"")
         self.assertEqual(
-            err, "CommandError: specify at least one cache to ping\n")
+            err, b"CommandError: specify at least one cache to ping\n")
         self.assertEqual(p.returncode, 1)
 
 @override_settings(CACHES=clearcache.CACHES)
@@ -108,16 +111,17 @@ class ClearcacheTestCase(SimpleTestCase, ExecMixin):
 
     def test_clearcache_no_cache(self):
         (out, err, p) = self.runcmd([])
-        self.assertEqual(out, "")
+        self.assertEqual(out, b"")
         self.assertEqual(
-            err, "CommandError: specify at least one cache to clear\n")
+            err, b"CommandError: specify at least one cache to clear\n")
         self.assertEqual(p.returncode, 1)
 
     def test_pingcache_unknown_cache(self):
         (out, err, p) = self.runcmd(["blah"])
-        self.assertEqual(out, "")
-        self.assertRegexpMatches(
-            err, "django.core.cache.backends.base.InvalidCacheBackendError: Could not find backend \'blah\'")
+        self.assertEqual(out, b"")
+        six.assertRegex(self,
+                        err,
+                        b"django.core.cache.backends.base.InvalidCacheBackendError: Could not find backend \'blah\'")
         self.assertEqual(p.returncode, 1)
 
     def test_clearcache_conservative_clears_only_one_cache(self, explicit=False):
@@ -135,8 +139,8 @@ class ClearcacheTestCase(SimpleTestCase, ExecMixin):
             cmd.append("--method=conservative")
 
         (out, err, p) = self.runcmd(cmd)
-        self.assertEqual(out, 'Clearing redis1\n')
-        self.assertEqual(err, '')
+        self.assertEqual(out, b'Clearing redis1\n')
+        self.assertEqual(err, b'')
         self.assertEqual(p.returncode, 0)
 
         self.assertIsNone(redis1.get('foo'))
@@ -158,8 +162,8 @@ class ClearcacheTestCase(SimpleTestCase, ExecMixin):
         (out, err, p) = self.runcmd(['redis1',
                                      '--method=django-clear',
                                      '--settings=settings.clearcache'])
-        self.assertEqual(out, 'Clearing redis1\n')
-        self.assertEqual(err, '')
+        self.assertEqual(out, b'Clearing redis1\n')
+        self.assertEqual(err, b'')
         self.assertEqual(p.returncode, 0)
 
         self.assertIsNone(redis1.get('foo'))
