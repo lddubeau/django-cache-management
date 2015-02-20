@@ -3,6 +3,7 @@ from setuptools import setup, find_packages
 version = open('VERSION').read().strip()
 
 install_requires = [
+    'Django>=1.6,<1.8',
     'django-nose>=1.3,<2',
     'django-redis>=3.8.1,<4',
     'six'
