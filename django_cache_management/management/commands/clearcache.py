@@ -5,11 +5,14 @@ from django.conf import settings
 from optparse import make_option
 
 class Command(BaseCommand):
-    help = """
+
+    """
 Clear one or more cache.
 
 Note that the clear operation is not guaranteed to be atomic.
     """
+    help = __doc__
+
     args = "[cache_name ...]"
 
     option_list = BaseCommand.option_list + (

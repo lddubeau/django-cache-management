@@ -10,12 +10,15 @@ from django.conf import settings
 clean_re = re.compile(r" +\n")
 
 class Command(BaseCommand):
-    help = """
-    List the caches defined in your project's settings.
+
+    """
+    Lists the caches defined in your project's settings.
 
     .. warning:: This may expose SENSITIVE INFORMATION, like
     passwords.
     """
+
+    help = __doc__
 
     def handle(self, *args, **options):
         for name, value in sorted(six.iteritems(settings.CACHES)):

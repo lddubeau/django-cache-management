@@ -5,9 +5,10 @@ from django.conf import settings
 from optparse import make_option
 
 class Command(BaseCommand):
-    help = """
-Ping one or more caches.
-    """
+
+    "Ping one or more caches."
+    help = __doc__
+
     args = "[cache_name ...]"
 
     option_list = BaseCommand.option_list + (
