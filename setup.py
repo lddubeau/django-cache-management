@@ -6,6 +6,7 @@ from sphinx.setup_command import BuildDoc
 import sphinx.apidoc
 
 version = open('VERSION').read().strip()
+long_description = open("README.rst").read()
 
 install_requires = [
     'Django>=1.6,<1.8',
@@ -31,6 +32,7 @@ setup(
     author="Louis-Dominique Dubeau",
     author_email="ldd@lddubeau.com",
     description="Cache management for Django.",
+    long_description=long_description,
     license="MPL 2.0",
     keywords=["Django", "caching"],
     url="https://github.com/lddubeau/django-cache-management",
