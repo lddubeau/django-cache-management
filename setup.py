@@ -1,9 +1,6 @@
 import os
 
 from setuptools import setup, find_packages
-import sphinx
-from sphinx.setup_command import BuildDoc
-import sphinx.apidoc
 
 version = open('VERSION').read().strip()
 long_description = open("README.rst").read()
@@ -15,15 +12,22 @@ install_requires = [
     'six'
 ]
 
-class Sphinx(BuildDoc):
+try:
+    import sphinx
+    from sphinx.setup_command import BuildDoc
+    import sphinx.apidoc
 
-    def run(self):
-        src_dir = (self.distribution.package_dir or {'': ''})['']
-        src_dir = os.path.join(os.getcwd(), src_dir)
-        sphinx.apidoc.main(
-            ['', '-f', '-o', os.path.join(self.source_dir, '_apidoc'),
-             src_dir])
-        BuildDoc.run(self)
+    class Sphinx(BuildDoc):
+
+        def run(self):
+            src_dir = (self.distribution.package_dir or {'': ''})['']
+            src_dir = os.path.join(os.getcwd(), src_dir)
+            sphinx.apidoc.main(
+                ['', '-f', '-o', os.path.join(self.source_dir, '_apidoc'),
+                 src_dir])
+            BuildDoc.run(self)
+except ImportError:
+    sphinx = None
 
 setup(
     name="django-cache-management",
@@ -50,5 +54,5 @@ setup(
         "Topic :: Utilities",
     ],
     setup_requires=['sphinx'],
-    cmdclass={'sphinx': Sphinx}
+    cmdclass={'sphinx': Sphinx} if sphinx is not None else {}
 )
