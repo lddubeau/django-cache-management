@@ -15,7 +15,14 @@ except ImportError:
 
 class Command(BaseCommand):
 
-    "Ping one or more caches."
+    """
+Ping one or more caches. This is done by performing a non-destructive
+access of the cache through Django's cache framework. Some cache
+backends can be configured to hide accessibility problems
+(e.g. ``django_redis`` with the ``IGNORE_EXCEPTIONS`` turned on). In
+such cases, this command will report that the cache is accessible (the
+ping will succeed) even if it may not be in fact accessible.
+    """
     help = __doc__
 
     args = "[cache_name ...]"
