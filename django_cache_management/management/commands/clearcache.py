@@ -17,7 +17,7 @@ except ImportError:
 class Command(BaseCommand):
 
     """
-Clear one or more cache.
+Clear one or more caches.
 
 Note that the clear operation is not guaranteed to be atomic.
     """
