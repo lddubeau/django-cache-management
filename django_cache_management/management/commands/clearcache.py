@@ -1,18 +1,8 @@
-from django.core.management.base import BaseCommand, CommandError
-from django.conf import settings
-
 from optparse import make_option
 
-try:
-    # Django 1.7 and later
-    from django.core.cache import caches
-
-    def get_cache(name):
-        return caches[name]
-except ImportError:
-    # Django 1.6
-    from django.core.cache import get_cache
-
+from django.core.management.base import BaseCommand, CommandError
+from django.conf import settings
+from django.core.cache import caches
 
 class Command(BaseCommand):
 
@@ -60,7 +50,7 @@ not prefixed with the cache's key. "conservative" is the default.
 
             # Make sure all names given exist
             for name in args:
-                get_cache(name)
+                caches[name]
 
         method = options["method"]
         noop = options["noop"]
@@ -93,7 +83,7 @@ not prefixed with the cache's key. "conservative" is the default.
             for name in args:
                 self.stdout.write(action + name)
                 config = settings.CACHES[name]
-                cache = get_cache(name)
+                cache = caches[name]
                 prefix = cache.key_prefix
                 backend = config["BACKEND"]
                 if backend.startswith("django_redis."):
@@ -105,6 +95,6 @@ not prefixed with the cache's key. "conservative" is the default.
         else:
             for name in args:
                 self.stdout.write(action + name)
-                cache = get_cache(name)
+                cache = caches[name]
                 if not noop:
                     cache.clear()

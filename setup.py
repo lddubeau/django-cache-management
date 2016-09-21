@@ -6,7 +6,7 @@ version = open('VERSION').read().strip()
 long_description = open("README.rst").read()
 
 install_requires = [
-    'Django>=1.6,<1.9',
+    'Django>=1.7,<1.10',
     'django-nose>=1.3,<2',
     'django-redis>=3.8.1,<4',
     'six'
@@ -45,14 +45,16 @@ setup(
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.5",
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
         "Operating System :: POSIX",
         "Framework :: Django",
-        "Framework :: Django :: 1.6",
         "Framework :: Django :: 1.7",
         "Framework :: Django :: 1.8",
+        "Framework :: Django :: 1.9",
+        "Framework :: Django :: 1.10",
         "Topic :: Software Development :: Libraries",
         "Topic :: Utilities",
     ],
