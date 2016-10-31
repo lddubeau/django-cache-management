@@ -51,13 +51,13 @@ Cache named: default
 
 Cache named: foo
 {
+    "TRACE": "***UNSERIALIZABLE VALUE***",
     "BACKEND": "django.core.cache.backends.locmem.LocMemCache"
 }
 
 """
     assert_equal(err, b"", "stderr should be empty")
-    assert_equal(out, expected, "stdout should be a list of caches"
-                 " and their settings")
+    assert_equal(out, expected)
 
 class ExecMixin(object):
     command = None

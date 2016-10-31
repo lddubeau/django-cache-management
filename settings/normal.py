@@ -22,7 +22,8 @@ CACHES = {
         "BACKEND": "django.core.cache.backends.locmem.LocMemCache"
     },
     'foo': {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache"
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "TRACE": lambda *_: None,
     }
 }
 
