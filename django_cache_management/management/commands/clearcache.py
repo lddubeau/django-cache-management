@@ -13,43 +13,42 @@ Note that the clear operation is not guaranteed to be atomic.
     """
     help = __doc__
 
-    args = "[cache_name ...]"
-
-    option_list = BaseCommand.option_list + (
-        make_option('--noop',
-                    action='store_true',
-                    dest='noop',
-                    default=False,
-                    help='Do not actually perform the action.'),
-        make_option('--all',
-                    action='store_true',
-                    dest='all',
-                    default=False,
-                    help='Clear all caches.'),
-        make_option('--method',
-                    dest='method',
-                    default="conservative",
-                    choices=("conservative", "django-clear"),
-                    help="""
+    def add_arguments(self, parser):
+        parser.add_argument("cache_names", nargs="*")
+        parser.add_argument('--noop',
+                            action='store_true',
+                            dest='noop',
+                            default=False,
+                            help='Do not actually perform the action.')
+        parser.add_argument('--all',
+                            action='store_true',
+                            dest='all',
+                            default=False,
+                            help='Clear all caches.')
+        parser.add_argument('--method',
+                            dest='method',
+                            default="conservative",
+                            choices=("conservative", "django-clear"),
+                            help="""
 The method to use. The method "conservative" will remove only the
 keys that begin with the cache's prefix. The method "django-clear"
 will use Django's ``clear`` method, which will delete even keys that are
 not prefixed with the cache's key. "conservative" is the default.
-""".strip()),
-    )
+""".strip())
 
     def handle(self, *args, **options):
+        cache_names = options["cache_names"]
         if options["all"]:
-            if args:
+            if cache_names:
                 raise CommandError("cannot use --all with a cache name")
 
-            args = settings.CACHES.keys()
+            cache_names = settings.CACHES.keys()
         else:
-            if not args:
+            if not cache_names:
                 raise CommandError("specify at least one cache to clear")
 
             # Make sure all names given exist
-            for name in args:
+            for name in cache_names:
                 caches[name]
 
         method = options["method"]
@@ -58,7 +57,7 @@ not prefixed with the cache's key. "conservative" is the default.
         action = "Clearing " if not noop else "Not clearing "
 
         if method == "conservative":
-            for name in args:
+            for name in cache_names:
                 config = settings.CACHES[name]
                 backend = config["BACKEND"]
                 failed = False
@@ -80,7 +79,7 @@ not prefixed with the cache's key. "conservative" is the default.
                         "conservatively clear a "
                         "cache with backend {0}".format(backend))
 
-            for name in args:
+            for name in cache_names:
                 self.stdout.write(action + name)
                 config = settings.CACHES[name]
                 cache = caches[name]
@@ -93,7 +92,7 @@ not prefixed with the cache's key. "conservative" is the default.
                     if keys and not noop:
                         con.delete(*keys)
         else:
-            for name in args:
+            for name in cache_names:
                 self.stdout.write(action + name)
                 cache = caches[name]
                 if not noop:

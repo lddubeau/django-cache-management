@@ -16,32 +16,31 @@ ping will succeed) even if it may not be in fact accessible.
     """
     help = __doc__
 
-    args = "[cache_name ...]"
-
-    option_list = BaseCommand.option_list + (
-        make_option('--all',
-                    action='store_true',
-                    dest='all',
-                    default=False,
-                    help='Ping all caches.'),
-    )
+    def add_arguments(self, parser):
+        parser.add_argument("cache_names", nargs="*")
+        parser.add_argument("--all",
+                            action="store_true",
+                            dest="all",
+                            default=False,
+                            help="Ping all caches.")
 
     def handle(self, *args, **options):
+        cache_names = options["cache_names"]
         if options["all"]:
-            if args:
+            if cache_names:
                 raise CommandError("cannot use --all with a cache name")
 
-            args = sorted(settings.CACHES.keys())
+            cache_names = sorted(settings.CACHES.keys())
         else:
-            if not args:
+            if not cache_names:
                 raise CommandError("specify at least one cache to ping")
 
             # Make sure all names given exist
-            for name in args:
+            for name in cache_names:
                 caches[name]
 
         failed = False
-        for name in args:
+        for name in cache_names:
             cache = caches[name]
             try:
                 "foo" in cache
