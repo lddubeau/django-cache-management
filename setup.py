@@ -6,9 +6,9 @@ version = open('VERSION').read().strip()
 long_description = open("README.rst").read()
 
 install_requires = [
-    'Django>=1.7,<1.10',
+    'Django>=1.8,<1.11',
     'django-nose>=1.3,<2',
-    'django-redis>=3.8.1,<4',
+    'django-redis>=3,<5',
     'six'
 ]
 
