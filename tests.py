@@ -56,8 +56,23 @@ Cache named: foo
 }
 
 """
+    expected2 = b"""\
+Cache named: default
+{
+    "BACKEND": "django.core.cache.backends.locmem.LocMemCache"
+}
+
+Cache named: foo
+{
+    "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+    "TRACE": "***UNSERIALIZABLE VALUE***"
+}
+
+"""
+
     assert_equal(err, b"", "stderr should be empty")
-    assert_equal(out, expected)
+    if (out not in (expected, expected2)):
+        raise AssertionError("should be one of expected or expected2")
 
 class ExecMixin(object):
     command = None
