@@ -5,13 +5,6 @@ from setuptools import setup, find_packages
 version = open('VERSION').read().strip()
 long_description = open("README.rst").read()
 
-install_requires = [
-    'Django>=1.8,<1.11',
-    'django-nose>=1.3,<2',
-    'django-redis>=3,<5',
-    'six'
-]
-
 try:
     import sphinx
     from sphinx.setup_command import BuildDoc
@@ -40,21 +33,25 @@ setup(
     license="MPL 2.0",
     keywords=["Django", "caching"],
     url="https://github.com/lddubeau/django-cache-management",
-    install_requires=install_requires,
+    install_requires=[
+        'Django>=1.11',
+        'six'
+    ],
     classifiers=[
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
         "Operating System :: POSIX",
         "Framework :: Django",
-        "Framework :: Django :: 1.7",
-        "Framework :: Django :: 1.8",
-        "Framework :: Django :: 1.9",
-        "Framework :: Django :: 1.10",
+        "Framework :: Django :: 1.11",
+        "Framework :: Django :: 2.0",
+        "Framework :: Django :: 2.1",
         "Topic :: Software Development :: Libraries",
         "Topic :: Utilities",
     ],

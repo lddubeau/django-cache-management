@@ -3,7 +3,7 @@ managing your caches.
 
 It has been tested with these combinations:
 
-- Python 2.7, 3.4 and 3.5 and Django 1.8, 1.9, 1.10.
+- Python 2.7, 3.7 and Django 1.11, Python 3.7 and Django 2.0 and 2.1.
 
 This code is currently used in production.
 
@@ -17,6 +17,14 @@ It provides these commands:
 * ``clearcache``: clears one or more caches.
 
 ### Changelog
+
+* 3.0.0:
+
+  + Drop support for Django versions prior to 1.11. This is a breaking change
+    and so require a new major number.
+
+  + Formally support 1.11, 2.0 and 2.1. (This package already worked fine on
+    them.)
 
 * 2.0.0:
 
