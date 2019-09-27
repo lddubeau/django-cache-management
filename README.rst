@@ -18,6 +18,14 @@ It provides these commands:
 
 ### Changelog
 
+* 4.0.0:
+
+  + Formally support Django 2.2. (This package already worked fine on it.)
+
+  + Drop support for Django 2.0. It reached EOL.
+
+  + Drop support for Python 2.7 and 3.4.
+
 * 3.0.0:
 
   + Drop support for Django versions prior to 1.11. This is a breaking change
