@@ -3,7 +3,7 @@ managing your caches.
 
 It has been tested with these combinations:
 
-- Python 2.7, 3.7 and Django 1.11, Python 3.7 and Django 2.0 and 2.1.
+- Python 3.5, 3.7 and Django 1.11, 2.1 and 2.2.
 
 This code is currently used in production.
 
