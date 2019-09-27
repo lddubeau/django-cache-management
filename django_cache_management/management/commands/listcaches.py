@@ -1,7 +1,6 @@
 import json
 import re
 
-import six
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
@@ -29,7 +28,7 @@ class Command(BaseCommand):
     help = __doc__
 
     def handle(self, *args, **options):
-        for name, value in sorted(six.iteritems(settings.CACHES)):
+        for name, value in sorted(settings.CACHES.items()):
             self.stdout.write("Cache named: " + name)
             # We use dumps to pretty-print the dictionary
             self.stdout.write(

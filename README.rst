@@ -18,6 +18,11 @@ It provides these commands:
 
 ### Changelog
 
+* 4.0.1:
+
+  + Don't use or require ``six`` anymore. It was an oversight that it stayed in
+    after we dropped support for Python 2.7.
+
 * 4.0.0:
 
   + Formally support Django 2.2. (This package already worked fine on it.)

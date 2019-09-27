@@ -35,7 +35,6 @@ setup(
     url="https://github.com/lddubeau/django-cache-management",
     install_requires=[
         'Django>=1.11',
-        'six'
     ],
     classifiers=[
         "Programming Language :: Python",

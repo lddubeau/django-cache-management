@@ -3,7 +3,6 @@ import unittest
 import os
 import time
 
-import six
 from django.test.utils import override_settings
 from django.test.testcases import SimpleTestCase
 from nose.tools import assert_equal
@@ -122,9 +121,7 @@ Pinging foo... successful
     def test_pingcache_unknown_cache(self):
         (out, err, p) = self.runcmd(["blah"])
         self.assertEqual(out, b"")
-        six.assertRegex(self,
-                        err,
-                        make_expected_missing_cache_error("blah"))
+        self.assertRegex(err, make_expected_missing_cache_error("blah"))
 
         self.assertEqual(p.returncode, 1)
 
@@ -161,9 +158,7 @@ class ClearcacheTestCase(SimpleTestCase, ExecMixin):
     def test_pingcache_unknown_cache(self):
         (out, err, p) = self.runcmd(["blah"])
         self.assertEqual(out, b"")
-        six.assertRegex(self,
-                        err,
-                        make_expected_missing_cache_error("blah"))
+        self.assertRegex(err, make_expected_missing_cache_error("blah"))
         self.assertEqual(p.returncode, 1)
 
     def test_clearcache_conservative_clears_only_one_cache(self, explicit=False):

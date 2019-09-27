@@ -1,7 +1,6 @@
 from .normal import *
-from six.moves import xrange
 
-for index in xrange(1, 3):
+for index in range(1, 3):
     name = 'redis' + str(index)
     CACHES[name] = {
         'BACKEND': 'django_redis.cache.RedisCache',
