@@ -44,7 +44,7 @@ master_doc = 'index'
 project = u'django-cache-management'
 copyright = u'2015, Louis-Dominique Dubeau'
 
-full_version = open("../VERSION").read().strip()
+full_version = open("../django_cache_management/VERSION").read().strip()
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

@@ -1,2 +1,3 @@
-include VERSION
+include README.rst
+include django_cache_management/VERSION
 include LICENSE

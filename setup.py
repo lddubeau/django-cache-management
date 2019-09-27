@@ -2,7 +2,7 @@ import os
 
 from setuptools import setup, find_packages
 
-version = open('VERSION').read().strip()
+version = open('django_cache_management/VERSION').read().strip()
 long_description = open("README.rst").read()
 
 try:
@@ -56,5 +56,6 @@ setup(
         "Topic :: Utilities",
     ],
     setup_requires=['sphinx'],
+    include_package_data=True,
     cmdclass={'sphinx': Sphinx} if sphinx is not None else {}
 )
