@@ -5,37 +5,16 @@ import time
 
 from django.test.utils import override_settings
 from django.test.testcases import SimpleTestCase
+from django.core.cache import caches
 from nose.tools import assert_equal
 
 from settings import clearcache
 
-# We set ``using_caches`` because our software merely lets the exceptions
-# caused by referencing bad cache names trickle up, and these
-# exceptions are different depending on whether ``caches`` is used or
-# ``get_cache``.
-try:
-    # Django 1.7 and later
-    from django.core.cache import caches
-
-    def get_cache(name):
-        return caches[name]
-
-    def make_expected_missing_cache_error(name):
-        return \
-            ("django.core.cache.backends.base.InvalidCacheBackendError: "
-             "Could not find config for \'{0}\' in settings.CACHES") \
-            .format(name).encode()
-
-    using_caches = True
-except ImportError:
-    # Django 1.6
-    from django.core.cache import get_cache
-    using_caches = False
-
-    def make_expected_missing_cache_error(name):
-        return \
-            ("django.core.cache.backends.base.InvalidCacheBackendError: "
-             "Could not find backend \'{0}\'").format(name).encode()
+def make_expected_missing_cache_error(name):
+    return \
+        ("django.core.cache.backends.base.InvalidCacheBackendError: "
+         "Could not find config for \'{0}\' in settings.CACHES") \
+        .format(name).encode()
 
 CWD = os.getcwd()
 
@@ -162,10 +141,10 @@ class ClearcacheTestCase(SimpleTestCase, ExecMixin):
         self.assertEqual(p.returncode, 1)
 
     def test_clearcache_conservative_clears_only_one_cache(self, explicit=False):
-        redis1 = get_cache('redis1')
+        redis1 = caches['redis1']
         redis1.set('foo', 'foo value 1')
 
-        redis2 = get_cache('redis2')
+        redis2 = caches['redis2']
         redis2.set('foo', 'foo value 2')
 
         self.assertEqual(redis1.get('foo'), 'foo value 1')
@@ -187,10 +166,10 @@ class ClearcacheTestCase(SimpleTestCase, ExecMixin):
         self.test_clearcache_conservative_clears_only_one_cache(True)
 
     def test_clearcache_django_clear_clears_everything(self):
-        redis1 = get_cache('redis1')
+        redis1 = caches['redis1']
         redis1.set('foo', 'foo value 1')
 
-        redis2 = get_cache('redis2')
+        redis2 = caches['redis2']
         redis2.set('foo', 'foo value 2')
 
         self.assertEqual(redis1.get('foo'), 'foo value 1')
