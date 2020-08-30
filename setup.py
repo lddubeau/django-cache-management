@@ -25,7 +25,8 @@ except ImportError:
 setup(
     name="django-cache-management",
     version=version,
-    packages=find_packages(),
+    packages=find_packages(
+        include=("django_cache_management", "django_cache_management.*")),
     author="Louis-Dominique Dubeau",
     author_email="ldd@lddubeau.com",
     description="Cache management for Django.",
