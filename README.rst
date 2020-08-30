@@ -3,7 +3,7 @@ managing your caches.
 
 It has been tested with these combinations:
 
-- Python 3.5, 3.7 and Django 1.11, 2.1 and 2.2.
+- Python 3.6, 3.7, 3.8 and Django 2.2, 3.0, 3.1.
 
 This code is currently used in production.
 
@@ -17,6 +17,20 @@ It provides these commands:
 * ``clearcache``: clears one or more caches.
 
 ### Changelog
+
+* 5.0.0:
+
+  + Fix setup.py to avoid packaging the folders that pertain only to
+    development.
+
+  + Drop support for Django 1.1. It reached EOL.
+
+  + Drop support for Python 3.5. We're two weeks away from its EOL.
+
+  + Formally test on Python 3.6 and 3.8.
+
+  + Formally test on Django 3.0 and 3.1. (It was already compatible but now tox
+    run tests on these versions.)
 
 * 4.0.1:
 
